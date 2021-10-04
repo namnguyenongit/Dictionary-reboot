@@ -19,9 +19,10 @@
 #nav {
     -fx-background-color: -fx-base-color;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 2, 0);
+    -fx-spacing: 2;
 }
 
-#nav > .button {
+#nav > .toggle-button {
     -fx-background-color: -fx-base-color;
     -fx-text-fill: -fx-black;
     -fx-font-size: 24px;
@@ -34,7 +35,8 @@
     -fx-padding: 1 0 0 35;
 }
 
-#nav > .button:hover {
+#nav > .toggle-button:selected,
+#nav > .toggle-button:hover {
     -fx-border-style: hidden hidden hidden solid;
     -fx-border-width: 5;
     -fx-border-color: -fx-base-hover;
