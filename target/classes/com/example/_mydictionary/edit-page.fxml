@@ -16,16 +16,11 @@
     <children>
         <VBox id="nav" prefHeight="640.0" prefWidth="267.0" spacing="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Pane id="headpane" prefHeight="138.0" prefWidth="267.0">
+                <Pane id="headpane" prefHeight="243.0" prefWidth="268.0">
                     <children>
-                        <Text id="headpane-text" layoutX="98.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My Dict">
-                            <font>
-                                <Font name="System Bold" size="40.0" />
-                            </font>
-                        </Text>
-                        <ImageView fitHeight="90.0" fitWidth="77.0" layoutX="21.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="243.0" fitWidth="244.0" layoutX="13.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../images/icons8-books-64.png" />
+                                <Image url="@../../../images/MyDict-logo.png" />
                             </image>
                         </ImageView>
                     </children></Pane>
