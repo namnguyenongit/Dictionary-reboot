@@ -1,11 +1,14 @@
+@import "https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap";
+
 * {
     -fx-base-color: #FFF;               /*  NAV BASE COLOR   */
     -fx-base-hover: #2973B7;            /*  NAV ON HOVER    */
     -fx-white: #FFF;                    /*  WHITE   */
-    -fx-border: #CCC;                   /*  BORDER COLOR    */
-    -fx-background: #E1E1E1;            /*  APP BACKGROUND  */
+    -fx-border: #E1E1E1;                   /*  BORDER COLOR    */
+    -fx-background: #EEE;            /*  APP BACKGROUND  */
     -fx-black: #000;                    /*  BLACK   */
     -fx-button-hover-light: #B6D5F2;    /*  BUTTON BACKGROUND ON HOVER    */
+    -fx-font-family: "Montserrat";
 }
 
 /*
@@ -26,7 +29,7 @@
     -fx-background-color: -fx-base-color;
     -fx-text-fill: -fx-black;
     -fx-font-size: 24px;
-    -fx-font-weight: normal;
+    -fx-font-weight: bold;
     -fx-border-radius: 0;
     -fx-background-radius: 0;
     -fx-text-alignment: center;
@@ -48,12 +51,6 @@
     -fx-background-color: -fx-white;
 }
 
-#headpane-text {
-    -fx-font-size: 40px;
-    -fx-font-weight: bold;
-    -fx-margin: 0 30 0 30;
-}
-
 Line {
     -fx-stroke: -fx-background;
 }
@@ -62,7 +59,7 @@ Line {
     COMBO BOX
 */
 
-.combo-box .arrow, .combo-box .arrow-button{
+.combo-box .arrow, .combo-box .arrow-button {
     -fx-background-color: transparent;
 }
 
@@ -85,14 +82,9 @@ Line {
     -fx-padding: 5 30 5 30;
 }
 
-.combo-box-popup .list-cell:last-child {
-    -fx-border-radius: 0 0 30 30;
-    -fx-background-radius: 0 0 30 30;
-}
-
 .combo-box-popup .list-cell:focused,
 .combo-box-popup .list-cell:hover {
-    -fx-background-color: -fx-base-hover;
+    -fx-background-color: -fx-button-hover-light;
     -fx-cursor: hand;
 }
 
@@ -100,9 +92,7 @@ Line {
 .scroll-bar:vertical *.increment-button,
 .scroll-bar:vertical *.decrement-button {
     -fx-background-color: null;
-    -fx-background-radius: 0;
-    -fx-background-insets: 0;
-    -fx-padding: 0;
+    -fx-padding: 0 5 0 5;
 }
 
 .scroll-bar:vertical *.increment-arrow,
@@ -114,37 +104,77 @@ Line {
     -fx-shape: null;
 }
 
-.scroll-bar:horizontal *.increment-button,
-.scroll-bar:horizontal *.decrement-button {
-    -fx-background-color: null;
-    -fx-background-radius: 0;
-    -fx-background-insets: 0;
-    -fx-padding: 0;
-}
-
-.scroll-bar:horizontal *.increment-arrow,
-.scroll-bar:horizontal *.decrement-arrow {
-    -fx-background-color: null;
-    -fx-background-radius: 0;
-    -fx-background-insets: 0;
-    -fx-padding: 0;
-    -fx-shape: null;
+.scroll-bar:vertical .thumb {
+    -fx-background-color: -fx-base-hover;
+    -fx-opacity: 0.8;
 }
 
     /*  Remove bottom line  */
-.jfx-text-field > .input-line,
+/*.jfx-text-field > .input-line,*/
 .jfx-combo-box > .input-line {
     -fx-background-color: transparent;
     -fx-pref-height: 0px;
     -fx-translate-y: 0px;
 }
 
-.jfx-text-field > .input-focused-line,
+/*.jfx-text-field > .input-focused-line,*/
 .jfx-combo-box > .input-focused-line {
     -fx-background-color: transparent;
     -fx-pref-height: 0px;
 }
 
+/*
+    TEXT AREA
+*/
+
+.text-area {
+    -fx-background-color: -fx-white;
+    -fx-font-size: 20;
+    -fx-cursor: hand;
+}
+
+.text-area:focused {
+    -fx-faint-focus-color: transparent;
+}
+
+.text-area .content {
+    -fx-background-color: transparent, white, transparent, white;
+}
+
+.text-area .scroll-bar:vertical .thumb {
+    -fx-background-color: -fx-button-hover-light;
+    -fx-opacity: 0;
+    -fx-background-radius: 50;
+    -fx-border-radius: 50;
+}
+
+.text-area .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.text-area:hover .scroll-bar:vertical .thumb {
+    -fx-background-color: -fx-button-hover-light;
+    -fx-opacity: 1;
+}
+
+.text-area .scroll-bar:vertical:pressed .thumb,
+.text-area .scroll-bar:vertical:hover .thumb {
+    -fx-background-color: -fx-base-hover;
+    -fx-opacity: 0.8;
+    -fx-cursor: hand;
+}
+
+/*
+    SPEAK
+*/
+
+#speak {
+    -fx-background-color: white;
+}
+
+#speak:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 4);
+}
 
 /*
     SUBMIT BUTTON
@@ -188,5 +218,6 @@ Line {
 #home-vbox {
     -fx-background-radius: 10 10 0 0;
     -fx-background-color: -fx-white;
-    -fx-padding: 10 20 10 20;
+    -fx-padding: 5 20 15 20;
+    -fx-spacing: 6;
 }

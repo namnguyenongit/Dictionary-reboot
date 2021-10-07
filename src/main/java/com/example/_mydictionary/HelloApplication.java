@@ -14,6 +14,8 @@ public class HelloApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("home-page.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles/styles.css")).toExternalForm());
+//        scene.getStylesheets().add("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&display=swap");
+        stage.setTitle("What A Dict!");
         stage.setScene(scene);
         stage.show();
     }

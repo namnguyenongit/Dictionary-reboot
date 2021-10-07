@@ -67,8 +67,8 @@ public class HelloController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Connect to DB to get word data.
         String dbUsername = "root";
-        String dbPassword = "darkmoon1";
-        String dbURL = "jdbc:mysql://localhost:3306/dict";
+        String dbPassword = "nvn120901";
+        String dbURL = "jdbc:mysql://localhost:3307/dict";
         try {
             Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
             ResultSet rs = connection.createStatement().executeQuery("SELECT word FROM tbl_dict_2c");
