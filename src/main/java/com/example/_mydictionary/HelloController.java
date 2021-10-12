@@ -1,6 +1,7 @@
 package com.example._mydictionary;
 
 import example._mydictionary.AutoCompleteComboBox;
+import javafx.beans.property.SetProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,9 @@ import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import com.sun.speech.freetts.Voice;
+import com.sun.speech.freetts.VoiceManager;
+
 public class HelloController implements Initializable {
     @FXML
     ComboBox<String> searchComboBox = new ComboBox<>();
@@ -33,6 +37,7 @@ public class HelloController implements Initializable {
     private TextArea outputText;
     @FXML
     private Button removeButton;
+
 
     // Switch to HomePage when click Home button.
     public void switchToHome(ActionEvent event) throws IOException {
@@ -62,6 +67,24 @@ public class HelloController implements Initializable {
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles/styles.css")).toExternalForm());
         stage.setScene(scene);
         stage.show();
+    }
+    // Speak words in search bar.
+    public void voice(ActionEvent event){
+        System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+        Voice voice = VoiceManager.getInstance().getVoice("kevin16");
+        if (voice != null) {
+            voice.allocate();
+            try {
+                voice.setRate(170);
+                voice.setPitch(100);
+                voice.setVolume(200);
+                voice.speak(searchComboBox.getEditor().getText());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            throw new IllegalStateException("Can't find voice: kevin16");
+        }
     }
 
     // Handle remove data
@@ -127,6 +150,5 @@ public class HelloController implements Initializable {
             System.out.println("MOUSE PRESSED!!!");
             // will add history here later.
         });
-
     }
 }
