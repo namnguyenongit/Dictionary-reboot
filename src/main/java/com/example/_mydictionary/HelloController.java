@@ -89,24 +89,10 @@ public class HelloController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Connect to DB to get word data.
-        String dbUsername = "root";
-        String dbPassword = "nvn120901";
-        String dbURL = "jdbc:mysql://localhost:3307/dict";
-        try {
-            Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
-            ResultSet rs = connection.createStatement().executeQuery("SELECT word FROM tbl_dict_2c");
-            while (rs.next()) {
-                searchComboBox.getItems().addAll(rs.getString("word"));
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-
-        // AutoCompleteComboBox declare.
+        example._mydictionary.DBController.init();
+        example._mydictionary.DBController.printHis();
+        searchComboBox.getItems().addAll(example._mydictionary.DBController.words);
         AutoCompleteComboBox.autoCompleteComboBox(searchComboBox, AutoCompleteComboBox.AutoCompleteMode.STARTS_WITH);
-
-        // Consume when press SPACEBAR so the Editable ComboBox won't reset.
         ComboBoxListViewSkin skin = new ComboBoxListViewSkin<>(searchComboBox);
         skin.getPopupContent().addEventFilter(KeyEvent.ANY, e -> {
             if (e.getCode() == KeyCode.SPACE) {
@@ -114,27 +100,14 @@ public class HelloController implements Initializable {
             }
         });
         searchComboBox.setSkin(skin);
-
-        // Set Text to TextArea whenever the Editable ComboBox changed.
         searchComboBox.getEditor().textProperty().addListener(((observableValue, s, t1) -> {
             String input_word = searchComboBox.getEditor().getText();
-            try {
-                Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
-                ResultSet rs = connection.createStatement().executeQuery("SELECT meaning FROM tbl_dict_2c WHERE word = '" + input_word + "'");
-                while (rs.next()) {
-                    outputText.setText(rs.getString("meaning"));
-                }
-            } catch (SQLException e) {
-                System.out.println(e);
+            if (example._mydictionary.DBController.words.contains(input_word)) {
+                outputText.setText(example._mydictionary.DBController.dictData.get(input_word));
             }
-            if (Objects.equals(input_word, "")) {
-                outputText.setText("");     // Case when input = null.
+            if (input_word.length() == 0) {
+                outputText.setText("");
             }
         }));
-
-        searchComboBox.getEditor().setOnMousePressed(event -> {
-            System.out.println("MOUSE PRESSED!!!");
-            // will add history here later.
-        });
     }
 }

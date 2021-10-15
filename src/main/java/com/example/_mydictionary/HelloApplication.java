@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class HelloApplication extends Application {
@@ -18,6 +19,12 @@ public class HelloApplication extends Application {
         stage.setTitle("What A Dict!");
         stage.setScene(scene);
         stage.show();
+    }
+    @Override
+    public void stop() throws SQLException {
+        System.out.println("Stage is closing");
+        example._mydictionary.DBController.ResetOnClose();
+        example._mydictionary.DBController.UpdateOnClose();
     }
 
     public static void main(String[] args) {
