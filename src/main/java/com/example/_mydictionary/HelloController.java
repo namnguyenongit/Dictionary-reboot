@@ -9,9 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.control.skin.ComboBoxListViewSkin;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -37,6 +35,8 @@ public class HelloController implements Initializable {
     private Parent root;
     @FXML
     private TextArea outputText;
+    @FXML
+    private Button removeButton;
 
 
     // Switch to HomePage when click Home button.
@@ -84,6 +84,20 @@ public class HelloController implements Initializable {
             }
         } else {
             throw new IllegalStateException("Can't find voice: kevin16");
+        }
+    }
+
+    // Handle remove data
+    public void handleRemove(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete confirmation!");
+        alert.setHeaderText(null);
+        alert.setContentText("You're about to delete this word!");
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(getClass().getResource("styles/dialogue.css").toExternalForm());
+        if(alert.showAndWait().get() == ButtonType.OK) {
+            System.out.println("Successfully delete data!");
+            //Logic delete data here
         }
     }
 

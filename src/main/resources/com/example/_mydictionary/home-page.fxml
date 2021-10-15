@@ -66,7 +66,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <TextArea fx:id="outputText" editable="false" prefHeight="344.0" prefWidth="595.0" wrapText="true" VBox.vgrow="ALWAYS" />
+            <TextArea id="home-text-area" fx:id="outputText" editable="false" prefHeight="320.0" prefWidth="613.0" wrapText="true" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
       <JFXComboBox fx:id="searchComboBox" editable="true" focusColor="#405aa800" focusTraversable="false" labelFloat="true" layoutX="298.0" layoutY="37.0" prefHeight="25.0" prefWidth="635.0" promptText="Insert word here..." unFocusColor="#cccccc" visibleRowCount="4" AnchorPane.leftAnchor="298.0" AnchorPane.rightAnchor="27.0" />
