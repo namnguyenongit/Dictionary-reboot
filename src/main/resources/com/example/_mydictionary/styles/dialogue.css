@@ -1,0 +1,18 @@
+/*
+    DIALOG PANE
+*/
+.dialog-pane > .content.label {
+    -fx-text-fill: black;
+    -fx-font-size: 17px;
+}
+
+.dialog-pane .button{
+    -fx-text-fill: black;
+    -fx-wrap-text: true;
+    -fx-cursor: hand;
+}
+
+.dialog-pane .button:hover{
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}

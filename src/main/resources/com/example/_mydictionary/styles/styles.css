@@ -128,37 +128,46 @@ Line {
 */
 
 .text-area {
+    -fx-padding: 20 10 20 10;
+    -fx-background-color: -fx-white;
+    -fx-font-size: 20;
+    -fx-background-radius: 10 10 10 10;
+    -fx-border-radius: 10 10 10 10;
+}
+
+#home-text-area {
     -fx-background-color: -fx-white;
     -fx-font-size: 20;
     -fx-cursor: hand;
 }
 
-.text-area:focused {
+#home-text-area:focused {
     -fx-faint-focus-color: transparent;
 }
 
-.text-area .content {
+.text-area .content,
+#home-text-area .content {
     -fx-background-color: transparent, white, transparent, white;
 }
 
-.text-area .scroll-bar:vertical .thumb {
+#home-text-area .scroll-bar:vertical .thumb {
     -fx-background-color: -fx-button-hover-light;
     -fx-opacity: 0;
     -fx-background-radius: 50;
     -fx-border-radius: 50;
 }
 
-.text-area .scroll-bar:vertical {
+#home-text-area .scroll-bar:vertical {
     -fx-background-color: transparent;
 }
 
-.text-area:hover .scroll-bar:vertical .thumb {
+#home-text-area:hover .scroll-bar:vertical .thumb {
     -fx-background-color: -fx-button-hover-light;
     -fx-opacity: 1;
 }
 
-.text-area .scroll-bar:vertical:pressed .thumb,
-.text-area .scroll-bar:vertical:hover .thumb {
+#home-text-area .scroll-bar:vertical:pressed .thumb,
+#home-text-area .scroll-bar:vertical:hover .thumb {
     -fx-background-color: -fx-base-hover;
     -fx-opacity: 0.8;
     -fx-cursor: hand;
@@ -197,6 +206,10 @@ Line {
     -fx-opacity: 0.8;
 }
 
+#remove-btn {
+    -fx-background-color: #b6b6b6;
+}
+
 /*
     CONTENT
 */
@@ -208,6 +221,12 @@ Line {
     -fx-font-size: 18px;
     -fx-pref-height: 52px;
     -fx-border-color: -fx-border;
+}
+
+#text-input:focused {
+    -fx-background-color: transparent,-fx-box-border,-fx-control-inner-background;
+    -fx-background-insets: -1.4, 0, 1;
+    -fx-background-radius: 50;
 }
 
 #content {
