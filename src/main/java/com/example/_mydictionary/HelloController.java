@@ -1,6 +1,9 @@
 package com.example._mydictionary;
 
 import example._mydictionary.AutoCompleteComboBox;
+
+import example._mydictionary.DBController;
+
 import javafx.beans.property.SetProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,9 +37,36 @@ public class HelloController implements Initializable {
     private Scene scene;
     private Parent root;
     @FXML
-    private TextArea outputText;
+    private TextArea searchTextArea;
     @FXML
     private Button removeButton;
+    @FXML
+    private TextField createTextField;
+    @FXML
+    private TextArea createTextArea;
+    @FXML
+    private TextField editTextField;
+    @FXML
+    private TextArea editTextArea;
+    @FXML
+    private Button editDeleteButton;
+
+    public void editDelete(ActionEvent event) throws SQLException {
+        DBController.delete(editTextField.getText());
+        DBController.words.remove(editTextField.getText());
+        DBController.dictData.remove(editTextField.getText());
+    }
+
+    public void createSubmit(ActionEvent event) throws SQLException {
+        if(createTextField.getText().isEmpty() || createTextArea.getText().isEmpty()){
+            System.out.println("Word or Meaning is empty");
+        } else if(!DBController.words.contains(createTextField.getText())){
+            DBController.add(createTextField.getText(),createTextArea.getText());
+        } else {
+            System.out.println("Word already have");
+        }
+
+    }
 
 
     // Switch to HomePage when click Home button.
@@ -101,11 +131,35 @@ public class HelloController implements Initializable {
         }
     }
 
+    public void editActionOnReleased(KeyEvent event) {
+        String input_word = editTextField.getText();
+        if (DBController.words.contains(input_word)) {
+            editTextArea.setText(DBController.dictData.get(input_word));
+            editDeleteButton.setDisable(false);
+        } else {
+            editTextArea.setText("Dictionary doesn't have this word!");
+            editTextArea.setEditable(false);
+            editDeleteButton.setDisable(true);
+
+        }
+        if (input_word.length() == 0) {
+            editTextArea.setText("");
+        }
+    }
+
+    public void editSubmit(ActionEvent event) throws SQLException{
+        String input_word = editTextField.getText();
+        String newMeaning = editTextArea.getText();
+        if (DBController.words.contains(input_word) && !DBController.dictData.get(input_word).equals(newMeaning)) {
+            DBController.update(input_word, newMeaning);
+        } else {
+            System.out.println("Submit fail");
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        example._mydictionary.DBController.init();
-        example._mydictionary.DBController.printHis();
-        searchComboBox.getItems().addAll(example._mydictionary.DBController.words);
+        searchComboBox.getItems().addAll(DBController.words);
         AutoCompleteComboBox.autoCompleteComboBox(searchComboBox, AutoCompleteComboBox.AutoCompleteMode.STARTS_WITH);
         ComboBoxListViewSkin skin = new ComboBoxListViewSkin<>(searchComboBox);
         skin.getPopupContent().addEventFilter(KeyEvent.ANY, e -> {
@@ -116,11 +170,11 @@ public class HelloController implements Initializable {
         searchComboBox.setSkin(skin);
         searchComboBox.getEditor().textProperty().addListener(((observableValue, s, t1) -> {
             String input_word = searchComboBox.getEditor().getText();
-            if (example._mydictionary.DBController.words.contains(input_word)) {
-                outputText.setText(example._mydictionary.DBController.dictData.get(input_word));
+            if (DBController.words.contains(input_word)) {
+                searchTextArea.setText(DBController.dictData.get(input_word));
             }
             if (input_word.length() == 0) {
-                outputText.setText("");
+                searchTextArea.setText("");
             }
         }));
     }
