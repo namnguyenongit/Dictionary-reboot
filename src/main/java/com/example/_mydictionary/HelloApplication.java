@@ -1,5 +1,6 @@
 package com.example._mydictionary;
 
+import example._mydictionary.DBController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class HelloApplication extends Application {
@@ -42,8 +44,15 @@ public class HelloApplication extends Application {
             stage.close();
         }
     }
+    @Override
+    public void stop() throws SQLException {
+        DBController.ResetOnClose();
+        DBController.UpdateOnClose();
+    }
 
     public static void main(String[] args) {
+        DBController.init();
+        DBController.printHis();
         launch();
     }
 }

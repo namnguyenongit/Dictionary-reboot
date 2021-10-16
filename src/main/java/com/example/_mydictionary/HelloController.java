@@ -1,6 +1,7 @@
 package com.example._mydictionary;
 
 import example._mydictionary.AutoCompleteComboBox;
+import example._mydictionary.DBController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,9 +31,36 @@ public class HelloController implements Initializable {
     private Scene scene;
     private Parent root;
     @FXML
-    private TextArea outputText;
+    private TextArea searchTextArea;
     @FXML
     private Button removeButton;
+    @FXML
+    private TextField createTextField;
+    @FXML
+    private TextArea createTextArea;
+    @FXML
+    private TextField editTextField;
+    @FXML
+    private TextArea editTextArea;
+    @FXML
+    private Button editDeleteButton;
+
+    public void editDelete(ActionEvent event) throws SQLException {
+        DBController.delete(editTextField.getText());
+        DBController.words.remove(editTextField.getText());
+        DBController.dictData.remove(editTextField.getText());
+    }
+
+    public void createSubmit(ActionEvent event) throws SQLException {
+        if(createTextField.getText().isEmpty() || createTextArea.getText().isEmpty()){
+            System.out.println("Word or Meaning is empty");
+        } else if(!DBController.words.contains(createTextField.getText())){
+            DBController.add(createTextField.getText(),createTextArea.getText());
+        } else {
+            System.out.println("Word already have");
+        }
+
+    }
 
     // Switch to HomePage when click Home button.
     public void switchToHome(ActionEvent event) throws IOException {
@@ -78,26 +106,36 @@ public class HelloController implements Initializable {
         }
     }
 
+    public void editActionOnReleased(KeyEvent event) {
+        String input_word = editTextField.getText();
+        if (DBController.words.contains(input_word)) {
+            editTextArea.setText(DBController.dictData.get(input_word));
+            editDeleteButton.setDisable(false);
+        } else {
+            editTextArea.setText("Dictionary doesn't have this word!");
+            editTextArea.setEditable(false);
+            editDeleteButton.setDisable(true);
+
+        }
+        if (input_word.length() == 0) {
+            editTextArea.setText("");
+        }
+    }
+
+    public void editSubmit(ActionEvent event) throws SQLException{
+        String input_word = editTextField.getText();
+        String newMeaning = editTextArea.getText();
+        if (DBController.words.contains(input_word) && !DBController.dictData.get(input_word).equals(newMeaning)) {
+            DBController.update(input_word, newMeaning);
+        } else {
+            System.out.println("Submit fail");
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Connect to DB to get word data.
-        String dbUsername = "root";
-        String dbPassword = "nvn120901";
-        String dbURL = "jdbc:mysql://localhost:3307/dict";
-        try {
-            Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
-            ResultSet rs = connection.createStatement().executeQuery("SELECT word FROM tbl_dict_2c");
-            while (rs.next()) {
-                searchComboBox.getItems().addAll(rs.getString("word"));
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-
-        // AutoCompleteComboBox declare.
+        searchComboBox.getItems().addAll(DBController.words);
         AutoCompleteComboBox.autoCompleteComboBox(searchComboBox, AutoCompleteComboBox.AutoCompleteMode.STARTS_WITH);
-
-        // Consume when press SPACEBAR so the Editable ComboBox won't reset.
         ComboBoxListViewSkin skin = new ComboBoxListViewSkin<>(searchComboBox);
         skin.getPopupContent().addEventFilter(KeyEvent.ANY, e -> {
             if (e.getCode() == KeyCode.SPACE) {
@@ -105,28 +143,14 @@ public class HelloController implements Initializable {
             }
         });
         searchComboBox.setSkin(skin);
-
-        // Set Text to TextArea whenever the Editable ComboBox changed.
         searchComboBox.getEditor().textProperty().addListener(((observableValue, s, t1) -> {
             String input_word = searchComboBox.getEditor().getText();
-            try {
-                Connection connection = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
-                ResultSet rs = connection.createStatement().executeQuery("SELECT meaning FROM tbl_dict_2c WHERE word = '" + input_word + "'");
-                while (rs.next()) {
-                    outputText.setText(rs.getString("meaning"));
-                }
-            } catch (SQLException e) {
-                System.out.println(e);
+            if (DBController.words.contains(input_word)) {
+                searchTextArea.setText(DBController.dictData.get(input_word));
             }
-            if (Objects.equals(input_word, "")) {
-                outputText.setText("");     // Case when input = null.
+            if (input_word.length() == 0) {
+                searchTextArea.setText("");
             }
         }));
-
-        searchComboBox.getEditor().setOnMousePressed(event -> {
-            System.out.println("MOUSE PRESSED!!!");
-            // will add history here later.
-        });
-
     }
 }
