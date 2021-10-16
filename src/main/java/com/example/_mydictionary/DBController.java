@@ -12,6 +12,9 @@ public class DBController {
     public static HashMap<String,String> dictData = new HashMap<>();
 
     public static void init() {
+
+        System.out.println("init is running");
+
         try{
             Connection connection = DriverManager.getConnection(dbURL,dbUsername,dbPassword);
             ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM tbl_dict_2c");
@@ -61,6 +64,38 @@ public class DBController {
         String resetQuery = "TRUNCATE TABLE tbl_his";
         truncate.executeUpdate(resetQuery);
         truncate.close();
+    }
+
+    public static void add(String word, String meaning) throws SQLException {
+        Connection connection = DriverManager.getConnection(dbURL,dbUsername,dbPassword);
+        String add = "INSERT INTO `tbl_dict_2c` (word, meaning) VALUES (?,?)";
+        PreparedStatement statement = connection.prepareStatement(add);
+        statement.setString(1,word);
+        statement.setString(2,meaning);
+        statement.execute();
+        statement.close();
+        init();
+    }
+
+    public static void update(String word, String meaning) throws SQLException {
+        Connection connection = DriverManager.getConnection(dbURL,dbUsername,dbPassword);
+        String add = "UPDATE `tbl_dict_2c` SET meaning = ? where word = ?";
+        PreparedStatement statement = connection.prepareStatement(add);
+        statement.setString(2,word);
+        statement.setString(1,meaning);
+        statement.execute();
+        statement.close();
+        init();
+    }
+
+    public static void delete(String word) throws SQLException {
+        Connection connection = DriverManager.getConnection(dbURL,dbUsername,dbPassword);
+        String add = "DELETE FROM `tbl_dict_2c` where word = ?";
+        PreparedStatement statement = connection.prepareStatement(add);
+        statement.setString(1,word);
+        statement.executeUpdate();
+        statement.close();
+        init();
     }
 }
 

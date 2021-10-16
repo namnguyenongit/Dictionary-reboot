@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane id="pane" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._mydictionary.HelloController">
+<AnchorPane id="pane" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._mydictionary.HelloController">
     <children>
         <VBox id="nav" prefHeight="640.0" prefWidth="267.0" spacing="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -56,12 +56,12 @@
         </VBox>
         <VBox id="content" layoutX="301.0" layoutY="86.0" prefHeight="520.0" prefWidth="632.0" AnchorPane.bottomAnchor="36.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="86.0">
             <children>
-                <TextField id="text-input" focusTraversable="false" prefHeight="52.0" prefWidth="601.0" promptText="Word" />
-            <TextArea prefHeight="335.0" prefWidth="632.0" promptText="Meaning" />
+                <TextField id="text-input" fx:id="editTextField" focusTraversable="false" onKeyReleased="#editActionOnReleased" prefHeight="52.0" prefWidth="601.0" promptText="Word" />
+            <TextArea fx:id="editTextArea" prefHeight="335.0" prefWidth="632.0" promptText="Meaning" />
             <HBox alignment="TOP_RIGHT" prefWidth="632.0" spacing="20.0">
                <children>
-                      <Button mnemonicParsing="false" prefHeight="51.0" prefWidth="114.0" text="Submit" />
-                  <Button id="remove-btn" fx:id="removeButton" mnemonicParsing="false" onAction="#handleRemove" prefHeight="51.0" prefWidth="114.0" text="Remove" />
+                      <Button mnemonicParsing="false" onAction="#editSubmit" prefHeight="51.0" prefWidth="114.0" text="Submit" />
+                  <Button id="remove-btn" fx:id="editDeleteButton" mnemonicParsing="false" onAction="#editDelete" prefHeight="51.0" prefWidth="114.0" text="Remove" />
                </children>
             </HBox>
             </children>
