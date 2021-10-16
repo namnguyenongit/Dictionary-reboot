@@ -46,9 +46,11 @@ public class HelloApplication extends Application {
     }
     @Override
     public void stop() throws SQLException {
+
         DBController.ResetOnClose();
         DBController.UpdateOnClose();
-    }
+
+        System.out.println("Stage is closing");
 
     public static void main(String[] args) {
         DBController.init();

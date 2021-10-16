@@ -4,15 +4,17 @@ import java.sql.*;
 import java.util.*;
 
 public class DBController {
-    private static final String dbURL = "jdbc:mysql://localhost:3306/dict";
+    private static final String dbURL = "jdbc:mysql://localhost:3307/dict";
     private static final String dbUsername = "root";
-    private static final String dbPassword = "darkmoon1";
+    private static final String dbPassword = "nvn120901";
     public static ArrayList<String> words = new ArrayList<>();
     public static Deque<String> historyWords = new LinkedList<>();
     public static HashMap<String,String> dictData = new HashMap<>();
 
     public static void init() {
+
         System.out.println("init is running");
+
         try{
             Connection connection = DriverManager.getConnection(dbURL,dbUsername,dbPassword);
             ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM tbl_dict_2c");
@@ -96,5 +98,4 @@ public class DBController {
         init();
     }
 }
-
 
