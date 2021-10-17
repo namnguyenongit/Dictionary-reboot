@@ -1,10 +1,9 @@
 package com.example._mydictionary;
 
+import com.sun.speech.freetts.Voice;
+import com.sun.speech.freetts.VoiceManager;
 import example._mydictionary.AutoCompleteComboBox;
-
 import example._mydictionary.DBController;
-
-import javafx.beans.property.SetProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,26 +19,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
-import com.sun.speech.freetts.Voice;
-import com.sun.speech.freetts.VoiceManager;
 
 public class HelloController implements Initializable {
     @FXML
     ComboBox<String> searchComboBox = new ComboBox<>();
     private Stage stage;
     private Scene scene;
-    private Parent root;
     @FXML
     private TextArea searchTextArea;
-    @FXML
-    private Button removeButton;
     @FXML
     private TextField createTextField;
     @FXML
@@ -52,20 +42,59 @@ public class HelloController implements Initializable {
     private Button editDeleteButton;
 
     public void editDelete(ActionEvent event) throws SQLException {
-        DBController.delete(editTextField.getText());
-        DBController.words.remove(editTextField.getText());
-        DBController.dictData.remove(editTextField.getText());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText(null);
+        if (editTextField.getText().isEmpty() || editTextArea.getText().isEmpty()) {
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setTitle("ERROR");
+            alert.setContentText("Word or meaning is empty!");
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().add(getClass().getResource("styles/dialogue.css").toExternalForm());
+            alert.showAndWait();
+        } else {
+            alert.setTitle("Delete confirmation!");
+            alert.setContentText("You're about to delete this word!");
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().add(getClass().getResource("styles/dialogue.css").toExternalForm());
+            if (alert.showAndWait().get() == ButtonType.OK) {
+                DBController.delete(editTextField.getText());
+                DBController.words.remove(editTextField.getText());
+                DBController.dictData.remove(editTextField.getText());
+                System.out.println("Successfully delete data!");
+            }
+        }
     }
 
     public void createSubmit(ActionEvent event) throws SQLException {
-        if(createTextField.getText().isEmpty() || createTextArea.getText().isEmpty()){
-            System.out.println("Word or Meaning is empty");
-        } else if(!DBController.words.contains(createTextField.getText())){
-            DBController.add(createTextField.getText(),createTextArea.getText());
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        if (createTextField.getText().isEmpty() || createTextArea.getText().isEmpty()) {
+            alert.setTitle("ERROR");
+            alert.setContentText("Word or meaning is empty!");
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().add(getClass().getResource("styles/dialogue.css").toExternalForm());
+            alert.showAndWait();
+        } else if (!DBController.words.contains(createTextField.getText())) {
+            DBController.add(createTextField.getText(), createTextArea.getText());
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setTitle("NOTIFICATION");
+            alert.setContentText("Word added to library!");
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().add(getClass().getResource("styles/dialogue.css").toExternalForm());
+            alert.showAndWait();
         } else {
-            System.out.println("Word already have");
+            alert.setTitle("ERROR");
+            alert.setContentText("Word already existed!");
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().add(getClass().getResource("styles/dialogue.css").toExternalForm());
+            if (alert.showAndWait().get() == ButtonType.OK) {
+                System.out.println("Word already existed!");
+                createTextArea.setText(null);
+                createTextField.setText(null);
+            }
         }
-
     }
 
 
@@ -98,8 +127,9 @@ public class HelloController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
     // Speak words in search bar.
-    public void voice(ActionEvent event){
+    public void voice(ActionEvent event) {
         System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
         Voice voice = VoiceManager.getInstance().getVoice("kevin16");
         if (voice != null) {
@@ -117,25 +147,12 @@ public class HelloController implements Initializable {
         }
     }
 
-    // Handle remove data
-    public void handleRemove(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Delete confirmation!");
-        alert.setHeaderText(null);
-        alert.setContentText("You're about to delete this word!");
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(getClass().getResource("styles/dialogue.css").toExternalForm());
-        if(alert.showAndWait().get() == ButtonType.OK) {
-            System.out.println("Successfully delete data!");
-            //Logic delete data here
-        }
-    }
-
     public void editActionOnReleased(KeyEvent event) {
         String input_word = editTextField.getText();
         if (DBController.words.contains(input_word)) {
             editTextArea.setText(DBController.dictData.get(input_word));
             editDeleteButton.setDisable(false);
+            editTextArea.setEditable(true);
         } else {
             editTextArea.setText("Dictionary doesn't have this word!");
             editTextArea.setEditable(false);
@@ -147,13 +164,20 @@ public class HelloController implements Initializable {
         }
     }
 
-    public void editSubmit(ActionEvent event) throws SQLException{
+    public void editSubmit(ActionEvent event) throws SQLException {
         String input_word = editTextField.getText();
         String newMeaning = editTextArea.getText();
         if (DBController.words.contains(input_word) && !DBController.dictData.get(input_word).equals(newMeaning)) {
             DBController.update(input_word, newMeaning);
         } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             System.out.println("Submit fail");
+            alert.setHeaderText(null);
+            alert.setTitle("ERROR");
+            alert.setContentText("Word or meaning is empty!");
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().add(getClass().getResource("styles/dialogue.css").toExternalForm());
+            alert.showAndWait();
         }
     }
 
