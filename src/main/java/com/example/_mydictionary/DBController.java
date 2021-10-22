@@ -4,9 +4,9 @@ import java.sql.*;
 import java.util.*;
 
 public class DBController {
-    private static final String dbURL = "jdbc:mysql://localhost:3307/dict";
+    private static final String dbURL = "jdbc:mysql://localhost:3306/dict";
     private static final String dbUsername = "root";
-    private static final String dbPassword = "nvn120901";
+    private static final String dbPassword = "darkmoon1";
     public static ArrayList<String> words = new ArrayList<>();
     public static Deque<String> historyWords = new LinkedList<>();
     public static HashMap<String,String> dictData = new HashMap<>();

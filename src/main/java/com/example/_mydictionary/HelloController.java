@@ -157,7 +157,6 @@ public class HelloController implements Initializable {
             editTextArea.setText("Dictionary doesn't have this word!");
             editTextArea.setEditable(false);
             editDeleteButton.setDisable(true);
-
         }
         if (input_word.length() == 0) {
             editTextArea.setText("");

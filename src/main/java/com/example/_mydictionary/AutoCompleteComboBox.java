@@ -21,7 +21,6 @@
  */
 package example._mydictionary;
 
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -112,7 +111,17 @@ public class AutoCompleteComboBox {
                     return;
                 }
                 String t = comboBox.getEditor().getText();
-                comboBox.setItems(list);
+                comboBox.getItems().clear();
+                if (list.size() >= 10) {
+                     for (int i = 0; i < 10; i++) {
+                         comboBox.getItems().add(list.get(i));
+                     }
+                 }
+                else {
+                     for(int i = 0; i < list.size(); i++) {
+                         comboBox.getItems().add(list.get(i));
+                     }
+                }
                 comboBox.getEditor().setText(t);
                 if (!moveCaretToPos) {
                     caretPos = -1;
@@ -141,6 +150,8 @@ public class AutoCompleteComboBox {
                 comboBox.setVisibleRowCount(Math.min(count, 4));
                 comboBox.show();
             }
+
+
 
         });
     }
